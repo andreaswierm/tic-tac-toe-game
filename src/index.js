@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Menu } from './components';
-import './index.css';
+import './index.scss';
 
 ReactDOM.render(
   <Menu />,
