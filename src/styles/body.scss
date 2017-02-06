@@ -1,5 +1,7 @@
 body {
   align-items: center;
+  background-color: $background-color;
+  color: $primary-color;
   display: flex;
   font-family: sans-serif;
   height: 100vh;
