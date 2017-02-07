@@ -1,33 +1,47 @@
 import React, { Component } from 'react';
+import { Board } from './../';
 
 class Menu extends Component {
   state = {
-    isPlaying: false,
-    singlePlayer: false
+    isPlaying: true,
+    isSinglePlayer: false
   }
 
   onClickMultiPlayer() {
     this.setState({
       isPlaying: true,
-      singlePlayer: false
+      isSinglePlayer: false
     });
   }
 
   onClickSinglePlayer() {
     this.setState({
       isPlaying: true,
-      singlePlayer: true
+      isSinglePlayer: true
     });
   }
 
   onResetState() {
     this.setState({
       isPlaying: false,
-      singlePlayer: false
+      isSinglePlayer: false
     });
   }
 
   render() {
+    const {
+      isPlaying,
+      isSinglePlayer
+    } = this.state;
+
+    if (isPlaying) {
+      return (
+        <Board
+          isSinglePLayer={isSinglePlayer}
+          onClickCancelGame={this.onResetState.bind(this)} />
+      );
+    }
+
     return (
       <ul className="tt-list tt-alignCenter">
         <li>

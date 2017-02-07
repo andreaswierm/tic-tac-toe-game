@@ -1,0 +1,7 @@
+const PLAYER_ONE = 'PLAYER_ONE';
+const PLAYER_TWO = 'PLAYER_TWO';
+
+export {
+  PLAYER_ONE,
+  PLAYER_TWO
+}

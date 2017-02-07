@@ -17,10 +17,10 @@ describe('Menu', () => {
         .toEqual(true);
     });
 
-    it('it should keep the singlePlayer state flag to false', () => {
+    it('it should keep the isSinglePlayer state flag to false', () => {
       wrapper.instance().onClickMultiPlayer();
 
-      expect(wrapper.instance().state.singlePlayer)
+      expect(wrapper.instance().state.isSinglePlayer)
         .toEqual(false);
     });
   });
@@ -39,10 +39,10 @@ describe('Menu', () => {
         .toEqual(true);
     });
 
-    it('it should set the singlePlayer state flag to true', () => {
+    it('it should set the isSinglePlayer state flag to true', () => {
       wrapper.instance().onClickSinglePlayer();
 
-      expect(wrapper.instance().state.singlePlayer)
+      expect(wrapper.instance().state.isSinglePlayer)
         .toEqual(true);
     });
   });
@@ -55,7 +55,7 @@ describe('Menu', () => {
 
       wrapper.setState({
         isPlaying: true,
-        singlePlayer: true
+        isSinglePlayer: true
       });
     });
 
@@ -66,10 +66,10 @@ describe('Menu', () => {
         .toEqual(false);
     });
 
-    it('it should set the singlePlayer state flag to true', () => {
+    it('it should set the isSinglePlayer state flag to true', () => {
       wrapper.instance().onResetState();
 
-      expect(wrapper.instance().state.singlePlayer)
+      expect(wrapper.instance().state.isSinglePlayer)
         .toEqual(false);
     });
   });

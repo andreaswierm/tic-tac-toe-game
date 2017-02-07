@@ -1,0 +1,51 @@
+.tt-board-container {
+  -webkit-animation: opacityAnimation 2s;
+}
+
+.tt-board {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+}
+
+.tt-boardRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.tt-board-header {
+  margin-bottom: 50px;
+  font-weight: 500;
+}
+
+.tt-boardCell {
+  align-items: center;
+  display: flex;
+  font-size: 22px;
+  font-weight: bold;
+  height: $boardCell-size;
+  justify-content: center;
+  text-transform: uppercase;
+  width: $boardCell-size;
+
+  &.tt-boardCell-borderLeft {
+    border-left: $boardCell-borderWidth solid $secondary-color;
+  }
+
+  &.tt-boardCell-borderTop {
+    border-top: $boardCell-borderWidth solid $secondary-color;
+  }
+}
+
+.tt-boardCell-content {
+  -webkit-animation: opacityAnimation 1s;
+}
+
+@-webkit-keyframes opacityAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
