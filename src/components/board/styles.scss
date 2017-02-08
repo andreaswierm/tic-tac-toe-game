@@ -41,6 +41,10 @@
   -webkit-animation: opacityAnimation 1s;
 }
 
+.tt-boardCell-winnerLabel {
+  -webkit-animation: spin 0.2s 0s infinite;
+}
+
 @-webkit-keyframes opacityAnimation {
   0% {
     opacity: 0;
@@ -48,4 +52,16 @@
   100% {
     opacity: 1;
   }
+}
+
+@-webkit-keyframes spin {
+    0% {
+      -webkit-transform: rotate(5deg);
+    }
+    50% {
+      -webkit-transform: rotate(-5deg);
+    }
+    100% {
+      -webkit-transform: rotate(5deg);
+    }
 }

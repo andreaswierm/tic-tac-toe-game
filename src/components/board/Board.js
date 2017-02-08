@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Rule } from './../../factory';
 
 import {
   PLAYER_ONE,
@@ -12,6 +13,8 @@ class Board extends Component {
   }
 
   state = {
+    isGameOver: false,
+
     grid: {
       0: {
         0: false,
@@ -30,6 +33,7 @@ class Board extends Component {
       }
     },
 
+    hasAWinner: false,
     playerTurn: PLAYER_ONE
   }
 
@@ -45,14 +49,28 @@ class Board extends Component {
 
     grid[xAxis][yAxis] = playerTurn;
 
+    const hasAWinner = Rule.isAWin(grid);
+    const isGameOver = Rule.isGameOver(grid);
+
+    if (hasAWinner || isGameOver) {
+      setTimeout(() => {
+        this.onClickRestart();
+      }, 3000);
+    } else {
+      playerTurn = playerTurn === PLAYER_ONE ? PLAYER_TWO : PLAYER_ONE
+    }
+
     this.setState({
+      isGameOver: !hasAWinner && isGameOver,
       grid,
-      playerTurn: playerTurn === PLAYER_ONE ? PLAYER_TWO : PLAYER_ONE
+      hasAWinner: hasAWinner,
+      playerTurn
     });
   }
 
   onClickRestart() {
     this.setState({
+      isGameOver: false,
       grid: {
         0: {
           0: false,
@@ -71,13 +89,31 @@ class Board extends Component {
         }
       },
 
+      hasAWinner: false,
       playerTurn: PLAYER_ONE
     });
   }
 
   render() {
     const { onClickCancelGame } = this.props;
-    const { playerTurn } = this.state;
+
+    const {
+      isGameOver,
+      hasAWinner,
+      playerTurn
+    } = this.state;
+
+    if (isGameOver) {
+      return <h1>GAME OVER!</h1>;
+    }
+
+    if (hasAWinner) {
+      return (
+        <h1 className="tt-boardCell-winnerLabel">
+          Player {playerTurn === PLAYER_ONE ? 'one' : 'two'} WON!!!!
+        </h1>
+      );
+    }
 
     return (
       <div className="tt-board-container tt-alignCenter">
@@ -113,36 +149,38 @@ class Board extends Component {
   renderBoard() {
     const { grid } = this.state;
 
-    return Object.keys(grid).map((row, xAxis) => {
-      const items = Object.keys(grid[row]).map((item, yAxis) => {
-        let classNames = ['tt-boardCell'];
-        let itemContent;
+    return Object
+      .keys(grid)
+      .map((row, xAxis) => {
+        const items = Object.keys(grid[row]).map((item, yAxis) => {
+          let classNames = ['tt-boardCell'];
+          let itemContent;
 
-        if (!!xAxis) {
-          classNames.push('tt-boardCell-borderTop');
-        }
+          if (!!xAxis) {
+            classNames.push('tt-boardCell-borderTop');
+          }
 
-        if (!!yAxis) {
-          classNames.push('tt-boardCell-borderLeft');
-        }
+          if (!!yAxis) {
+            classNames.push('tt-boardCell-borderLeft');
+          }
 
-        if (!!grid[xAxis][yAxis]) {
-          itemContent = (
-            <span className="tt-boardCell-content">
-              {grid[xAxis][yAxis] === PLAYER_ONE ? 'x' : 'o'}
-            </span>
+          if (!!grid[xAxis][yAxis]) {
+            itemContent = (
+              <span className="tt-boardCell-content">
+                {grid[xAxis][yAxis] === PLAYER_ONE ? 'x' : 'o'}
+              </span>
+            );
+          }
+
+          return (
+            <div
+              key={yAxis}
+              className={classNames.join(' ')}
+              onClick={this.onClickBoardItem.bind(this, xAxis, yAxis)}>
+              {itemContent}
+            </div>
           );
-        }
-
-        return (
-          <div
-            key={yAxis}
-            className={classNames.join(' ')}
-            onClick={this.onClickBoardItem.bind(this, xAxis, yAxis)}>
-            {itemContent}
-          </div>
-        );
-      });
+        });
 
       return (
         <div
