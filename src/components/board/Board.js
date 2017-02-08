@@ -1,5 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { Rule } from './../../factory';
+
+import {
+  Ai,
+  Rule
+} from './../../factory';
 
 import {
   PLAYER_ONE,
@@ -37,6 +41,17 @@ class Board extends Component {
     playerTurn: PLAYER_ONE
   }
 
+  isAiTurn() {
+    const { isSinglePLayer } = this.props;
+    const { playerTurn } = this.state;
+
+    if (playerTurn === PLAYER_TWO && isSinglePLayer) {
+      return true;
+    }
+
+    return false;
+  }
+
   onClickBoardItem(xAxis, yAxis) {
     let {
       grid,
@@ -66,6 +81,16 @@ class Board extends Component {
       hasAWinner: hasAWinner,
       playerTurn
     });
+
+    setTimeout(function() {
+      if (this.isAiTurn()) {
+        setTimeout(() => {
+          const nextAiMove = Ai.nextMove(grid);
+
+          this.onClickBoardItem(nextAiMove.xAxis, nextAiMove.yAxis);
+        }, 2000);
+      }
+    }.bind(this));
   }
 
   onClickRestart() {
@@ -94,13 +119,22 @@ class Board extends Component {
     });
   }
 
+  getPLayerName() {
+    const { playerTurn } = this.state;
+
+    if (this.isAiTurn()) {
+      return 'Jarvis';
+    }
+
+    return `Player ${playerTurn === PLAYER_ONE ? 'one' : 'two'}`;
+  }
+
   render() {
     const { onClickCancelGame } = this.props;
 
     const {
       isGameOver,
-      hasAWinner,
-      playerTurn
+      hasAWinner
     } = this.state;
 
     if (isGameOver) {
@@ -110,7 +144,7 @@ class Board extends Component {
     if (hasAWinner) {
       return (
         <h1 className="tt-boardCell-winnerLabel">
-          Player {playerTurn === PLAYER_ONE ? 'one' : 'two'} WON!!!!
+          {this.getPLayerName()} WON!!!!
         </h1>
       );
     }
@@ -118,7 +152,7 @@ class Board extends Component {
     return (
       <div className="tt-board-container tt-alignCenter">
         <h2 className="tt-board-header">
-          Player {playerTurn === PLAYER_ONE ? 'one' : 'two'} turn
+          {this.getPLayerName()} turn
         </h2>
 
         <div className="tt-board">
@@ -148,6 +182,7 @@ class Board extends Component {
 
   renderBoard() {
     const { grid } = this.state;
+    const canPlay = !this.isAiTurn();
 
     return Object
       .keys(grid)
@@ -176,7 +211,7 @@ class Board extends Component {
             <div
               key={yAxis}
               className={classNames.join(' ')}
-              onClick={this.onClickBoardItem.bind(this, xAxis, yAxis)}>
+              onClick={canPlay && this.onClickBoardItem.bind(this, xAxis, yAxis)}>
               {itemContent}
             </div>
           );

@@ -1,7 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Board from './Board';
-import { Rule } from './../../factory';
+
+import {
+  Ai,
+  Rule
+} from './../../factory';
 
 import {
   PLAYER_ONE,

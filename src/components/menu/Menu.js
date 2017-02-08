@@ -3,7 +3,7 @@ import { Board } from './../';
 
 class Menu extends Component {
   state = {
-    isPlaying: true,
+    isPlaying: false,
     isSinglePlayer: false
   }
 
