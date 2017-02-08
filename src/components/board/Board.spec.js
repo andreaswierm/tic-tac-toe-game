@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Board from './Board';
+import { Rule } from './../../factory';
 
 import {
   PLAYER_ONE,
@@ -75,6 +76,32 @@ describe('Board', () => {
 
         expect(wrapper.instance().state.grid[0][0])
           .toEqual(PLAYER_ONE);
+      });
+    });
+
+    describe('if the game is over', () => {
+      beforeEach(() => {
+        Rule.isGameOver = jest.fn().mockReturnThis(true);
+      });
+
+      it('should show Game Over', () => {
+        wrapper.find('.tt-boardCell').at(0).simulate('click');
+
+        expect(wrapper.text())
+          .toEqual('GAME OVER!');
+      });
+    });
+
+    describe('if there is a winner', () => {
+      beforeEach(() => {
+        Rule.isAWin = jest.fn().mockReturnThis(true);
+      });
+
+      it('should show the winner', () => {
+        wrapper.find('.tt-boardCell').at(0).simulate('click');
+
+        expect(wrapper.text())
+          .toEqual('Player one WON!!!!');
       });
     });
   });
